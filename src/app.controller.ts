@@ -17,7 +17,6 @@ export class AppController {
   @Post('submit')
   async submitForm(@Body() selectedCountry: any) {
     const response = await this.phoneNumberGenerator.generatePhoneNumbers(selectedCountry.selected, selectedCountry.quantity);
-    console.log('Response ', response.data.message);
     return { message: response.data.message }
   }
   

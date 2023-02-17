@@ -8,10 +8,14 @@ export class PhoneNumberGenerator {
     constructor(private validateService: ValidateService) {}
 
     async generatePhoneNumbers(selectedCountry: string, quantity: number) {
-        const countryInformation = this.countryInfo(selectedCountry);
-        const dialingCode = countryInformation.dialing_code;
-        const numbersList = this.generateNumberList(countryInformation, quantity);
-        return await this.validateService.validate(numbersList);
+        try {
+            const countryInformation = this.countryInfo(selectedCountry);
+            const dialingCode = countryInformation.dialing_code;
+            const numbersList = this.generateNumberList(countryInformation, quantity);
+            return await this.validateService.validate(numbersList);
+        } catch(e) {
+            return e;
+        }
     }
 
     private countryInfo(countryName: string) {
