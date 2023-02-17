@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>App</title>
+    </head>
+    <body>
+        <div>
+            <form onsubmit="handleSubmit(event)">
+                <select name="countries" id="countries">
+                    {{#each countryList}}
+                        <option value="{{this.value}}">{{this.country}}</option>
+                    {{/each}}
+                </select>
+                <input type="number" name="quantity" id="quantity">
+                <button type="submit">Submit</button>
+            </form>
+            <button onclick="handleReset()">Reset</button>
+            <div>
+                <p id="message">{{ message }}</p>
+            </div>
+        </div>
+
+        <script>
+            function handleReset() {
+                const xhr = new XMLHttpRequest();
+                document.getElementById('quantity').innerHTML = '';
+                document.getElementById('message').innerHTML = '';
+            }
+            
+            function handleSubmit(event) {
+                event.preventDefault();
+
+                const quantity = event.target.quantity.value;
+                const select = document.getElementById('countries');
+                const selected = select.value;
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/submit', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                xhr.onload = function() {
+                    if (xhr.status === 200 || xhr.status === 201) {
+                        const resp = JSON.parse(xhr.responseText);
+                        document.getElementById('message').innerHTML = resp.message;
+                    } else {
+                        document.getElementById('message').innerHTML = "Request failed.  Returned status of " + xhr.status
+                    }
+                };
+
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        console.log(xhr.responseText)
+                    }
+                }
+
+                xhr.send(JSON.stringify({selected, quantity}));
+            }
+        </script>
+    </body>
+</html>
