@@ -30,6 +30,7 @@ export class PhoneNumberGenerator {
             const numberLength = metadata.numberingPlan.possibleLengths();
 
             const range = process.env.RANGE;
+            
             let result = ''
             let numberList = [];
             let validatedNum: any;
