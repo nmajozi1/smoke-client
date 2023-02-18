@@ -9,7 +9,7 @@ export class ValidateService {
         } catch (e) {
             throw new HttpException({
                 status: HttpStatus.FORBIDDEN,
-                error: 'Failed insert phone numbers.',
+                error: 'Failed to validate the phone numbers.',
             }, HttpStatus.FORBIDDEN, {
                 cause: e
              });
