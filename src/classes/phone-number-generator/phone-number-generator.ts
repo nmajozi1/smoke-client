@@ -24,23 +24,40 @@ export class PhoneNumberGenerator {
     }
 
     private generateNumberList(countryInformation: any, quantity: number) {
-        const metadata = new Metadata();
-        metadata.selectNumberingPlan(countryInformation.code.iso2);
-        const numberLength = metadata.numberingPlan.possibleLengths();
+        try {
+            const metadata = new Metadata();
+            metadata.selectNumberingPlan(countryInformation.code.iso2);
+            const numberLength = metadata.numberingPlan.possibleLengths();
 
-        const range = process.env.RANGE;
-        let result = ''
-        let numberList = [];
+            const range = process.env.RANGE;
+            let result = ''
+            let numberList = [];
+            let validatedNum: any;
+            let parsedNum: any;
 
-        for(let x = 0; x < quantity; x++) {
-            for(let i = 0; i < numberLength[numberLength.length - 1] - 1; i++) {
-                result += range.charAt(Math.floor(Math.random() * range.length));
+            while(numberList.length < quantity) {
+                for(let i = 0; i < numberLength[numberLength.length - 1] - 1; i++) {
+                    result += range.charAt(Math.floor(Math.random() * range.length));
+                }
+                
+                parsedNum = parsePhoneNumber(result, countryInformation.code.iso2);
+
+                if(parsedNum) {
+                    validatedNum = parsedNum.number;
+
+                    if(parsedNum.isValid()) {
+                        numberList.push(parsePhoneNumber(result, countryInformation.code.iso2).number);
+                    }
+                }
+
+                result = '';
+
             }
-            
-            numberList.push(parsePhoneNumber(result, countryInformation.code.iso2).number);
-            result = '';
-        }
 
-        return numberList;
+            return numberList;
+        } catch (e) {
+            console.error(e);
+            throw new BadRequestException('Error generating phone numbers for this country', { cause: new Error(), description: 'Failed to generate phone numbers for this country.'});
+        }
     }
 }
