@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import * as country from 'country-list-js';
 import { ValidateService } from "src/services/validate/validate.service";
 import { Metadata } from 'libphonenumber-js'
@@ -9,11 +9,12 @@ export class PhoneNumberGenerator {
 
     async generatePhoneNumbers(selectedCountry: string, quantity: number) {
         try {
+            if(!quantity) throw new BadRequestException('Phone Numbers have not been provided.', { cause: new Error(), description: 'Phone Numbers have not been provided.'});
             const countryInformation = this.countryInfo(selectedCountry);
             const numbersList = this.generateNumberList(countryInformation, quantity);
             return await this.validateService.validate(numbersList);
         } catch(e) {
-            return e;
+            return { data: e };
         }
     }
 

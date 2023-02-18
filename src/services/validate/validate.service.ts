@@ -4,6 +4,6 @@ import axios from 'axios';
 @Injectable()
 export class ValidateService {
     async validate(phoneNumberList: any) {
-        return await axios.post('http://localhost:9000/validate', { phoneNumberList });
+        return await axios.post(`${process.env.SERVER_URL}/validate`, { phoneNumberList });
     }
 }

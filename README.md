@@ -28,6 +28,12 @@
 
 ## Installation
 
+## Environment Variables
+Create a .env file in the root directory
+
+Add the following environment variable:
+export SERVER_URL=http://localhost:9000
+
 ```bash
 $ npm install
 ```
