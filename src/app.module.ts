@@ -10,4 +10,5 @@ import { ValidateService } from './services/validate/validate.service';
   controllers: [AppController],
   providers: [AppService, Countries, PhoneNumberGenerator, ValidateService],
 })
+
 export class AppModule {}
