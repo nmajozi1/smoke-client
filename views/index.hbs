@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>App</title>
+        <title>Phone Number Generator</title>
     </head>
-    <body>
-        <div>
-            <form onsubmit="handleSubmit(event)">
-                <select name="countries" id="countries">
+    <body style="display: flex; flex: 1; flex-direction: row; justify-content:center; margin:50px; background-color:whitesmoke">
+        <div style="display: flex; flex: 1; flex-direction: column; min-height: 500px; width: 500px; max-width: 500px; border: 2px solid #000; border-radius: 10px">
+            <form onsubmit="handleSubmit(event)" style="margin: 10px; display: flex; flex-direction: column;">
+                <div style="text-align: center;">
+                    <h1>Phone Number Generator</h1>
+                    <hr />
+                </div>
+                <label style="margin-top: 10px; color: dimgray;">Select Country</label>
+                <select style="margin-top: 5px; height: 28px; border: 2px solid #000; padding: 2px; border-radius: 7px" name="countries" id="countries">
                     {{#each countryList}}
                         <option value="{{this.value}}">{{this.country}}</option>
                     {{/each}}
                 </select>
-                <input type="number" name="quantity" id="quantity">
-                <button type="submit">Submit</button>
+                <label style="margin-top: 10px; color: dimgray;">Input Quantity</label>
+                <input style="margin-top: 5px; height: 20px; border: 2px solid #000; padding: 2px; border-radius: 7px;" type="number" name="quantity" id="quantity">
+                <button style="margin-top: 20px; height: 30px; border-radius: 7px; background-color: rgba(0, 110, 255, 0.541);" type="submit">Submit</button>
             </form>
-            <button onclick="handleReset()">Reset</button>
-            <div>
-                <p id="message">{{ message }}</p>
+            <button style="margin: 2px 10px; height: 30px; border-radius: 7px; background-color: rgba(247, 72, 3, 0.514);" onclick="handleReset()">Reset</button>
+            <div style="margin: 10px;">
+                <p style="color: dimgray;" id="message">{{ message }}</p>
             </div>
         </div>
 
