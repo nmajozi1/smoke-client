@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import * as country from 'country-list-js';
 import { ValidateService } from "src/services/validate/validate.service";
+import parsePhoneNumber from 'libphonenumber-js'
 import { Metadata } from 'libphonenumber-js'
 
 @Injectable()
@@ -30,17 +31,14 @@ export class PhoneNumberGenerator {
         const range = process.env.RANGE;
         let result = ''
         let numberList = [];
-        let constructDialingCode = '';
 
         for(let x = 0; x < quantity; x++) {
             for(let i = 0; i < numberLength[numberLength.length - 1] - 1; i++) {
                 result += range.charAt(Math.floor(Math.random() * range.length));
             }
             
-            constructDialingCode = countryInformation.dialing_code.substr(0, 1) === '+' ? countryInformation.dialing_code : `+${countryInformation.dialing_code}`
-            numberList.push(`${constructDialingCode}${result}`);
+            numberList.push(parsePhoneNumber(result, countryInformation.code.iso2).number);
             result = '';
-            constructDialingCode = '';
         }
 
         return numberList;
