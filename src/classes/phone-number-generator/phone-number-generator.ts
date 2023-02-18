@@ -27,7 +27,7 @@ export class PhoneNumberGenerator {
         metadata.selectNumberingPlan(countryInformation.code.iso2);
         const numberLength = metadata.numberingPlan.possibleLengths();
 
-        const range = '0123456789';
+        const range = process.env.RANGE;
         let result = ''
         let numberList = [];
         let constructDialingCode = '';
