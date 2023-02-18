@@ -10,7 +10,6 @@ export class PhoneNumberGenerator {
     async generatePhoneNumbers(selectedCountry: string, quantity: number) {
         try {
             const countryInformation = this.countryInfo(selectedCountry);
-            const dialingCode = countryInformation.dialing_code;
             const numbersList = this.generateNumberList(countryInformation, quantity);
             return await this.validateService.validate(numbersList);
         } catch(e) {
@@ -30,14 +29,17 @@ export class PhoneNumberGenerator {
         const range = '0123456789';
         let result = ''
         let numberList = [];
+        let constructDialingCode = '';
 
         for(let x = 0; x < quantity; x++) {
             for(let i = 0; i < numberLength[numberLength.length - 1] - 1; i++) {
                 result += range.charAt(Math.floor(Math.random() * range.length));
             }
             
-            numberList.push(`+${countryInformation.dialing_code}${result}`);
+            constructDialingCode = countryInformation.dialing_code.substr(0, 1) === '+' ? countryInformation.dialing_code : `+${countryInformation.dialing_code}`
+            numberList.push(`${constructDialingCode}${result}`);
             result = '';
+            constructDialingCode = '';
         }
 
         return numberList;
